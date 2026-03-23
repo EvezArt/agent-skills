@@ -3,8 +3,6 @@
 A collection of AI agent skills for web scraping, data extraction, and Actor development on the Apify platform.
 
 > Looking for more specialized skills? Check out [apify/awesome-skills](https://github.com/apify/awesome-skills) — a community collection of domain-specific skills for lead generation, brand monitoring, competitor intelligence, and more.
->
-> Using Cursor? See [apify/cursor-plugins](https://github.com/apify/cursor-plugins) for ready-to-install Cursor marketplace plugins.
 
 ## Skills
 
@@ -22,21 +20,52 @@ Create, debug, and deploy Apify Actors from scratch in JavaScript, TypeScript, o
 
 Convert existing projects into Apify Actors — supports JS/TS (SDK), Python (async context manager), and any language (CLI wrapper).
 
-## Usage
+## Installation
 
-Any AI tool that supports Markdown context can use these skills by pointing to the SKILL.md files:
+```bash
+npx skills add apify/agent-skills
+```
 
-- `skills/apify-ultimate-scraper/SKILL.md`
-- `skills/apify-actor-development/SKILL.md`
-- `skills/apify-actorization/SKILL.md`
+### Claude Code
 
-For Codex and Gemini CLI, use the auto-generated index at `agents/AGENTS.md`.
+```bash
+# Add the marketplace
+/plugin marketplace add https://github.com/apify/agent-skills
+
+# Install a skill
+/plugin install apify-ultimate-scraper@apify-agent-skills
+```
+
+### Cursor / Windsurf
+
+Add to your project's `.cursor/settings.json` or use the same Claude Code plugin format.
+
+### Codex / Gemini CLI
+
+Point your agent to the `agents/AGENTS.md` file which contains skill descriptions and paths:
+
+```bash
+# Gemini CLI uses gemini-extension.json automatically
+# For Codex, reference agents/AGENTS.md in your configuration
+```
+
+### Other AI tools
+
+Any AI tool that supports Markdown context can use the skills by pointing to:
+- `agents/AGENTS.md` - auto-generated skill index
+- `skills/*/SKILL.md` - individual skill documentation
 
 ## Prerequisites
 
 1. **Apify account** — [apify.com](https://apify.com)
 2. **API token** — get from [Apify Console](https://console.apify.com/account/integrations), add `APIFY_TOKEN=your_token` to `.env`
 3. **Node.js 20.6+** (for the scraper skill)
+
+## Output formats
+
+- **Quick answer** - top 5 results displayed in chat (no file saved)
+- **CSV** - full export with all fields
+- **JSON** - full data export
 
 ## Pricing
 
