@@ -105,7 +105,7 @@ async function main() {
         }
     }
 
-    // Compose output (matching mcpc fetch-actor-details structure)
+    // Compose output
     const stats = actorInfo.stats || {};
     const output = {
         actorId: args.actor,
