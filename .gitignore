@@ -4,7 +4,10 @@
 # DEVELOPMENT
 .vscode
 .claude
+context/
+CLAUDE.md
 PLAN.md
 PLAN-*.md
 .mcp.json
+scripts/hooks/
 .idea

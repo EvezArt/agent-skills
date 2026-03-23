@@ -5,19 +5,24 @@
 # ///
 """Generate AGENTS.md from AGENTS_TEMPLATE.md and SKILL.md frontmatter.
 
+Also validates that marketplace.json is in sync with discovered skills.
+
 Usage:
   uv run scripts/generate_agents.py
 """
 
 from __future__ import annotations
 
+import json
 import re
+import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_PATH = ROOT / "scripts" / "AGENTS_TEMPLATE.md"
 OUTPUT_PATH = ROOT / "agents" / "AGENTS.md"
+MARKETPLACE_PATH = ROOT / ".claude-plugin" / "marketplace.json"
 
 
 def load_template() -> str:
@@ -76,6 +81,38 @@ def render(template: str, skills: list[dict[str, str]]) -> str:
     return content
 
 
+def validate_marketplace(skills: list[dict[str, str]]) -> list[str]:
+    """Validate marketplace.json against discovered skills. Returns error messages."""
+    if not MARKETPLACE_PATH.exists():
+        return [f"marketplace.json not found at {MARKETPLACE_PATH}"]
+
+    marketplace = json.loads(MARKETPLACE_PATH.read_text(encoding="utf-8"))
+    plugins = marketplace.get("plugins", [])
+    errors: list[str] = []
+
+    # Every plugin with skills should have at least one SKILL.md
+    for plugin in plugins:
+        source = plugin.get("source", "").lstrip("./")
+        plugin_skills = [s for s in skills if s["path"].startswith(source)]
+        if not plugin_skills:
+            errors.append(
+                f"Plugin '{plugin['name']}' at '{source}' has no SKILL.md files"
+            )
+
+    # Every discovered skill should be covered by a plugin
+    for skill in skills:
+        found = any(
+            skill["path"].startswith(p.get("source", "").lstrip("./"))
+            for p in plugins
+        )
+        if not found:
+            errors.append(
+                f"Skill '{skill['name']}' at '{skill['path']}' is not covered by any plugin"
+            )
+
+    return errors
+
+
 def main() -> None:
     template = load_template()
     skills = collect_skills()
@@ -83,6 +120,15 @@ def main() -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(output, encoding="utf-8")
     print(f"Wrote {OUTPUT_PATH} with {len(skills)} skills.")
+
+    # Validate marketplace.json
+    errors = validate_marketplace(skills)
+    if errors:
+        print("\nMarketplace.json validation errors:", file=sys.stderr)
+        for error in errors:
+            print(f"  - {error}", file=sys.stderr)
+        sys.exit(1)
+    print("Marketplace.json validation passed.")
 
 
 if __name__ == "__main__":

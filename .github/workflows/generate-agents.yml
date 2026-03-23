@@ -1,4 +1,4 @@
-name: Check AGENTS.md
+name: Check AGENTS.md and marketplace.json
 
 on:
   pull_request:
@@ -7,6 +7,7 @@ on:
       - "scripts/generate_agents.py"
       - "**/SKILL.md"
       - "agents/AGENTS.md"
+      - ".claude-plugin/marketplace.json"
 
 jobs:
   validate:
@@ -18,7 +19,7 @@ jobs:
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Generate AGENTS.md
+      - name: Generate AGENTS.md and validate marketplace.json
         run: uv run scripts/generate_agents.py
 
       - name: Ensure AGENTS.md is up to date
