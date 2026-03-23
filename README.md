@@ -61,12 +61,6 @@ Any AI tool that supports Markdown context can use the skills by pointing to:
 2. **API token** — get from [Apify Console](https://console.apify.com/account/integrations), add `APIFY_TOKEN=your_token` to `.env`
 3. **Node.js 20.6+** (for the scraper skill)
 
-## Output formats
-
-- **Quick answer** - top 5 results displayed in chat (no file saved)
-- **CSV** - full export with all fields
-- **JSON** - full data export
-
 ## Pricing
 
 Apify Actors use pay-per-result pricing. Check individual Actor pricing on the [Apify platform](https://apify.com).
