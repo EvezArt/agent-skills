@@ -33,6 +33,35 @@ Step 1: `hashtag`, `platform`, `postsCount`, `topPosts[]`, `relatedHashtags[]`
 Step 1: `videoUrl`, `description`, `likes`, `shares`, `views`, `author`, `music`
 Step 2: `category`, `posts[]`, `authors[]`, `music[]`
 
+## Reddit trend and community insight mining
+**When:** User wants to surface emerging trends, product feedback themes, or competitor mentions from Reddit communities.
+
+### Pipeline
+1. **Scrape subreddits** -> `trudax/reddit-scraper-lite`
+   - Key input: `startUrls` (subreddit URLs), `maxItems`, `sort` (hot/rising/new)
+
+### Output fields
+Step 1: `title`, `body`, `subreddit`, `score`, `numberOfComments`, `url`, `createdAt`, `comments[]`
+
+### Gotcha
+Use `sort: rising` for early trend signals, `sort: hot` for confirmed trending topics. Filter by `score` threshold (e.g., >50) to reduce noise. Comments array provides qualitative context for AI sentiment analysis.
+
+## YouTube outlier video discovery
+**When:** User wants to identify breakout videos in a niche with disproportionate views vs. channel subscriber count - a signal for content strategy pivots.
+
+### Pipeline
+1. **Search niche videos** -> `streamers/youtube-scraper`
+   - Key input: `searchTerms`, `maxResults`, `sort` (viewCount), `uploadDate` (filter range)
+2. **Get channel context** -> `streamers/youtube-channel-scraper`
+   - Pipe: `results[].channelUrl` -> `channelUrls`
+
+### Output fields
+Step 1: `title`, `viewCount`, `likeCount`, `commentCount`, `channelName`, `publishedAt`, `url`
+Step 2: `subscriberCount`, `videoCount`, `viewCount` (channel totals)
+
+### Gotcha
+Outlier score = video `viewCount` / channel `subscriberCount`. Ratios > 10x indicate breakout potential. Run Step 2 on a filtered shortlist only - no need to fetch channel data for every result.
+
 ## Content topic validation
 **When:** User wants to validate whether a topic has demand before creating content.
 

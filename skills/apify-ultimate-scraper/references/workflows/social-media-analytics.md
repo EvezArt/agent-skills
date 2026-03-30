@@ -23,6 +23,38 @@ Step 2: `caption`, `likesCount`, `commentsCount`, `timestamp`, `type` (photo/vid
 ### Output fields
 Step 1: `nickname`, `followers`, `following`, `likes`, `videos`, `verified`, `recentVideos[]` (with views, likes, shares per video)
 
+## Instagram competitor content analysis
+**When:** User wants to identify top-performing content formats and engagement patterns from competitor Instagram accounts.
+
+### Pipeline
+1. **Get competitor posts** -> `apify/instagram-post-scraper`
+   - Key input: `usernames` (competitor handles), `resultsLimit` (100), `scrapePostsUntilDate`
+2. **Get reels separately** -> `apify/instagram-reel-scraper`
+   - Key input: `usernames` (same handles)
+
+### Output fields
+Step 1: `likesCount`, `commentsCount`, `timestamp`, `type` (post/reel/story), `caption`, `displayUrl`, `url`
+Step 2: `likesCount`, `commentsCount`, `playsCount`, `duration`, `caption`, `url`
+
+### Gotcha
+Run both Actors to capture full content mix - the post scraper may under-count reels. Calculate engagement rate per post (likes + comments / follower count) and sort to surface top performers.
+
+## LinkedIn company page analytics
+**When:** User wants to track LinkedIn post performance for a company page or benchmark against competitors.
+
+### Pipeline
+1. **Get company posts** -> `harvestapi/linkedin-company-posts`
+   - Key input: `companyUrl`, `maxPosts`, `publishedAfter`
+2. **Enrich post details** -> `apimaestro/linkedin-post-detail`
+   - Pipe: `results[].url` -> `urls`
+
+### Output fields
+Step 1: `likesCount`, `commentsCount`, `repostsCount`, `text`, `publishedAt`, `url`
+Step 2: `reactions{}` (breakdown by type), `topComments[]`, `impressions`
+
+### Gotcha
+Both Actors are PPE. Step 1: ~$0.002/post, Step 2: ~$0.005/post. For 100 posts across 3 companies, estimate ~$2.10. Confirm with user before running.
+
 ## Multi-platform engagement comparison
 **When:** User wants to compare an account's performance across platforms.
 
