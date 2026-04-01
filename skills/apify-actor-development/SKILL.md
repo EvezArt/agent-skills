@@ -203,7 +203,10 @@ See [references/key-value-store-schema.md](references/key-value-store-schema.md)
 
 **IMPORTANT:** Always generate a README.md as part of Actor development. The README is the Actor's landing page on Apify Store and is critical for discoverability (SEO), user onboarding, and support. Do not consider an Actor complete without a proper README.
 
-See [references/actor-readme.md](references/actor-readme.md) for the required structure, SEO best practices, and content guidelines.
+See [references/actor-readme.md](references/actor-readme.md) for the required structure, SEO best practices, and content guidelines. Also review these top Actors for best practices:
+
+- [Instagram Scraper](https://apify.com/apify/instagram-scraper)
+- [Google Maps Scraper](https://apify.com/compass/crawler-google-places)
 
 ## Apify MCP Tools
 

@@ -53,11 +53,7 @@ Write in Markdown. Use H2 (`##`) for main sections (these form the table of cont
 - How to limit compute unit usage
 - How to get more accurate results or improve speed
 
-### 9. Related Actors (if applicable)
-
-- Link to your other relevant Actors in a list or table
-
-### 10. FAQ, Disclaimers, and Support
+### 9. FAQ, Disclaimers, and Support
 
 - Legal/scraping disclaimer (use this template and customize with the target site name):
   > Our Actors are ethical and do not extract any private user data, such as email addresses, gender, or location. They only extract what the user has chosen to share publicly. We therefore believe that our Actors, when used for ethical purposes by Apify users, are safe. However, you should be aware that your results could contain personal data. Personal data is protected by the GDPR in the European Union and by other regulations around the world. You should not scrape personal data unless you have a legitimate reason to do so. If you're unsure whether your reason is legitimate, consult your lawyers.
@@ -80,6 +76,13 @@ Write in Markdown. Use H2 (`##`) for main sections (these form the table of cont
 - For no-code users: use plain language, avoid code blocks early on
 - For developers: include technical details, code examples, and API references
 - Be clear about what technical knowledge is needed to use the Actor
+
+## Reference Actors
+
+Before writing a README, review these top Actors on the Apify Store for best practices on structure, tone, and content:
+
+- [Instagram Scraper](https://apify.com/apify/instagram-scraper)
+- [Google Maps Scraper](https://apify.com/compass/crawler-google-places)
 
 ## Key Rules
 
