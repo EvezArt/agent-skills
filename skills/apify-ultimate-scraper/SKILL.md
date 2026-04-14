@@ -7,7 +7,7 @@ description: Universal AI-powered web scraper for any platform. Scrape data from
 
 AI-driven data extraction from ~100 Actors across 15+ platforms via the Apify CLI.
 
-**Rule: Always pass `--json` to CLI commands.** JSON output is stable across CLI versions. Never parse human-readable output.
+**Rule: Always pass `--json` and redirect stderr with `2>/dev/null` to CLI commands.** JSON output is stable across CLI versions. stderr contains progress messages that break JSON parsers if not redirected.
 
 ## Prerequisites
 
@@ -16,13 +16,12 @@ AI-driven data extraction from ~100 Actors across 15+ platforms via the Apify CL
 
 ## Authentication
 
-Check: `apify info`
+If a CLI command fails with an auth error, authenticate using one of these methods:
 
-If not logged in, authenticate via OAuth (opens browser):
+1. **OAuth (interactive):** `apify login` (opens browser)
+2. **Environment variable:** `export APIFY_TOKEN=your_token_here`
+3. **From .env file:** `source .env` (if the file contains `APIFY_TOKEN=...`)
 
-    apify login
-
-Headless fallback: `export APIFY_TOKEN=your_token_here`
 Generate token: https://console.apify.com/settings/integrations
 
 ## Workflow
@@ -52,7 +51,7 @@ If the task involves a multi-step pipeline, also read the matching workflow guid
 
 If no Actor matches in the index, search dynamically:
 
-    apify actors search "KEYWORDS" --json --limit 10
+    apify actors search "KEYWORDS" --json --limit 10 2>/dev/null
 
 From results: `items[].username`/`items[].name` (Actor ID), `items[].title`, `items[].stats.totalUsers30Days`, `items[].currentPricingInfo.pricingModel`.
 
@@ -60,11 +59,9 @@ From results: `items[].username`/`items[].name` (Actor ID), `items[].title`, `it
 
 Fetch the input schema dynamically:
 
-    apify actors info "ACTOR_ID" --input --json
+    apify actors info "ACTOR_ID" --input --json 2>/dev/null
 
-Also read `references/gotchas.md` to check for pricing traps and common pitfalls for the selected Actor.
-
-For PPE Actors: estimate cost before running (see gotchas.md cost estimation protocol).
+Also read `references/gotchas.md` to check for common pitfalls for the selected Actor.
 
 For Actor documentation: `apify actors info "ACTOR_ID" --readme`
 
@@ -76,7 +73,7 @@ For larger tasks, confirm output format (quick answer / CSV / JSON) and result c
 
 **Standard run (blocking):**
 
-    apify actors call "ACTOR_ID" -i 'JSON_INPUT' --json
+    apify actors call "ACTOR_ID" -i 'JSON_INPUT' --json 2>/dev/null
 
 From output: `.id` (run ID), `.status`, `.defaultDatasetId`, `.stats.durationMillis`
 
@@ -92,9 +89,9 @@ For CSV: `apify datasets get-items DATASET_ID --format csv`
 
 **Large/long-running scrapes:**
 
-    apify actors start "ACTOR_ID" -i 'JSON_INPUT' --json
+    apify actors start "ACTOR_ID" -i 'JSON_INPUT' --json 2>/dev/null
 
-Poll: `apify runs info RUN_ID --json` (check `.status` for `SUCCEEDED`).
+Poll: `apify runs info RUN_ID --json 2>/dev/null` (check `.status` for `SUCCEEDED`).
 
 ### Step 4: Deliver results
 

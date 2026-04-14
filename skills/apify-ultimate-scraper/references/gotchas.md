@@ -14,16 +14,6 @@ To check an Actor's pricing:
 
 Read `.currentPricingInfo.pricingModel` and `.currentPricingInfo.pricePerEvent`.
 
-## Cost estimation protocol
-
-Before running any PPE Actor:
-
-1. Get the per-event price from Actor info (`.currentPricingInfo.pricePerEvent`)
-2. Multiply by the requested result count
-3. Present the estimate to the user: "This will cost approximately $X for Y results"
-4. If estimate > $5: warn explicitly
-5. If estimate > $20: require explicit user confirmation before proceeding
-
 ## Common pitfalls
 
 **Cookie-dependent Actors**
@@ -58,14 +48,14 @@ Check `.isDeprecated` in `apify actors info --json`. If `true`:
 2. Prefer `apify` tier replacements over `community` alternatives
 
 **LinkedIn pricing**
-LinkedIn Actors are all PPE and vary significantly:
-- `harvestapi/` Actors: generally cheaper ($0.001-0.01/result)
-- `apimaestro/` Actors: generally more expensive ($0.005-0.02/result)
+LinkedIn Actors are all PPE and vary significantly across publishers:
+- `harvestapi/` Actors: generally cheaper
+- `apimaestro/` Actors: generally more expensive
 - `dev_fusion/` Actors: mid-range, useful for mass scraping with email enrichment
 Always compare pricing before selecting a LinkedIn Actor.
 
 **SEO tool pricing**
-`radeance/` SEO scrapers (SimilarWeb, Ahrefs, SEMrush, Moz) have the highest per-result costs ($0.005-0.0275/result). For large-scale SEO analysis, estimate costs carefully and suggest batching.
+`radeance/` SEO scrapers (SimilarWeb, Ahrefs, SEMrush, Moz) have higher per-result costs than most other Actors. For large-scale SEO analysis, estimate costs carefully and suggest batching.
 
 ## Error recovery
 
